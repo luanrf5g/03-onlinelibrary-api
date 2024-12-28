@@ -36,5 +36,45 @@ namespace _03_onlinelibrary_api.Controllers
         {
             return Ok(_bookServices.GetBooks());
         }
+
+        [HttpGet]
+        [Route("{id}")]
+        [ProducesResponseType(typeof(Book), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        public IActionResult GetById([FromRoute] int id)
+        {
+            var book = _bookServices.GetBookById(id);
+
+            if (book == null)
+                return NotFound("Book not found");
+
+            return Ok(book);
+        }
+
+        [HttpPut]
+        [Route("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public IActionResult UpdateBook([FromBody] RequestUpdateBookJson request, [FromRoute] int id)
+        {
+            var book = _bookServices.GetBookById(id);
+
+            book.Price = request.Price;
+            book.Amount = request.Amount;
+
+            _bookServices._books[id - 1] = book;
+
+            return NoContent();
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public IActionResult DeleteBook([FromRoute] int id)
+        {
+            var book = _bookServices.GetBookById(id);
+
+            _bookServices._books.Remove(book);
+
+            return NoContent();
+        }
     }
 }

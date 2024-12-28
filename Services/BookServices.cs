@@ -1,5 +1,3 @@
-using System;
-using _03_onlinelibrary_api.Controllers;
 using _03_onlinelibrary_api.Entities;
 
 namespace _03_onlinelibrary_api.Services;
